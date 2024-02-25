@@ -8,7 +8,7 @@ const port = process.env.PORT || 5000;
 // middle ware
 app.use(express.json());
 app.use(cors());
-console.log(process.env.DB_USER);
+
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.mp2awoi.mongodb.net/?retryWrites=true&w=majority`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -24,8 +24,15 @@ async function run() {
   try {
     const database = client.db("taskDb");
     const userCollection = database.collection("user");
-    const taskCollection = database.collection("task");
-
+      const taskCollection = database.collection("task");
+      
+      
+    // Task create api
+    app.post("/api/v1/create-task", async (req, res) => {
+      const task = req.body;
+      const result = await taskCollection.insertOne(task);
+      res.send(result);
+    });
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
     );
