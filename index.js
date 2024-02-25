@@ -33,6 +33,14 @@ async function run() {
       res.send(result);
     });
 
+    // api To get user spcific task
+    app.get("/api/v1/get-task/:email", async (req, res) => {
+      const email = req.params.email;
+      const query = { email: email };
+      const result = await taskCollection.find(query).toArray();
+      res.send(result);
+    });
+      
     // Api for deleting task
     app.delete("/api/v1/delete-task/:id", async (req, res) => {
       const id = req.params.id;
