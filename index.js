@@ -24,9 +24,15 @@ async function run() {
   try {
     const database = client.db("taskDb");
     const userCollection = database.collection("user");
-      const taskCollection = database.collection("task");
-      
-      
+    const taskCollection = database.collection("task");
+
+    //   user creating and storing api
+    app.post("/api/v1/create-user", async (req, res) => {
+      const nwUser = req.body;
+      const result = await userCollection.insertOne(nwUser);
+      res.send(result);
+    });
+
     // Task create api
     app.post("/api/v1/create-task", async (req, res) => {
       const task = req.body;
