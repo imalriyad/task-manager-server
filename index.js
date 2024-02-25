@@ -29,6 +29,10 @@ async function run() {
     //   user creating and storing api
     app.post("/api/v1/create-user", async (req, res) => {
       const nwUser = req.body;
+      const isExist = await userCollection.findOne({ email: nwUser.email });
+      if (isExist) {
+        return res.status(201).send({ message: "Email Already exist" });
+      }
       const result = await userCollection.insertOne(nwUser);
       res.send(result);
     });
@@ -40,7 +44,23 @@ async function run() {
       const result = await taskCollection.find(query).toArray();
       res.send(result);
     });
-      
+
+    // Api for updating task tag
+    app.put("/api/v1/update-tag/:id", async (req, res) => {
+      const id = req.params.id;
+        const {tag} = req.body;
+        console.log(tag);
+      const query = { _id: new ObjectId(id) };
+      const updateDoc = {
+        $set: {
+          tag: tag,
+        },
+      };
+
+      const result = await taskCollection.updateOne(query, updateDoc);
+      res.send(result);
+    });
+
     // Api for deleting task
     app.delete("/api/v1/delete-task/:id", async (req, res) => {
       const id = req.params.id;
