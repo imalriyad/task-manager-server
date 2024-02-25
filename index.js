@@ -47,10 +47,10 @@ async function run() {
 
     // Api for updating task
     app.patch("/api/v1/update-task/:id", async (req, res) => {
-        const id = req.params.id;
-        console.log(id);
+      const id = req.params.id;
+      console.log(id);
       const updatedTask = req.body;
-
+      console.log(updatedTask);
       const query = { _id: new ObjectId(id) };
       const updateDoc = {
         $set: {
