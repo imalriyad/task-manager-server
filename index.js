@@ -33,12 +33,21 @@ async function run() {
       res.send(result);
     });
 
+    // Api for deleting task
+    app.delete("/api/v1/delete-task/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await taskCollection.deleteOne(query);
+      res.send(result);
+    });
+
     // Task create api
     app.post("/api/v1/create-task", async (req, res) => {
       const task = req.body;
       const result = await taskCollection.insertOne(task);
       res.send(result);
     });
+
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
     );
