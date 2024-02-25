@@ -45,11 +45,28 @@ async function run() {
       res.send(result);
     });
 
+    // Api for updating task
+    app.patch("/api/v1/update-task/:id", async (req, res) => {
+        const id = req.params.id;
+        console.log(id);
+      const updatedTask = req.body;
+
+      const query = { _id: new ObjectId(id) };
+      const updateDoc = {
+        $set: {
+          title: updatedTask.title,
+          deadline: updatedTask.deadline,
+          description: updatedTask.description,
+        },
+      };
+
+      const result = await taskCollection.updateOne(query, updateDoc);
+      res.send(result);
+    });
     // Api for updating task tag
     app.put("/api/v1/update-tag/:id", async (req, res) => {
       const id = req.params.id;
-        const {tag} = req.body;
-        console.log(tag);
+      const { tag } = req.body;
       const query = { _id: new ObjectId(id) };
       const updateDoc = {
         $set: {
